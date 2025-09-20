@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cafe App{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'cafe:home' %}" class="nav-logo">Cafe</a>
+            <ul class="nav-menu">
+                <li><a href="{% url 'cafe:home' %}">Home</a></li>
+                <li><a href="{% url 'cafe:menu' %}">Menu</a></li>
+                <li><a href="{% url 'cafe:gallery' %}">Gallery</a></li>
+                <li><a href="{% url 'cafe:about' %}">About</a></li>
+                <li><a href="{% url 'cafe:contact' %}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Cafe App. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
