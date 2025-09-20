@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Cafe - Artisan Coffee House</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <style>
+        :root {
+            --dark-brown: #3C2A21;
+            --medium-brown: #5C3D2E;
+            --light-brown: #B85C38;
+            --cream: #F0E3CA;
+            --accent: #E05D2F;
+            --light-accent: #FF9E6D;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #F9F6F0;
+            color: var(--dark-brown);
+        }
+        
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            color: var(--dark-brown) !important;
+            font-size: 28px;
+        }
+        
+        .nav-link {
+            color: var(--medium-brown) !important;
+            font-weight: 500;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent) !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--cream);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-brown);
+            border-color: var(--light-brown);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-secondary {
+            border-color: var(--medium-brown);
+            color: var(--medium-brown);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--medium-brown);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .page-hero {
+            padding: 80px 0 50px;
+            background: linear-gradient(135deg, var(--cream) 0%, #ffffff 100%);
+            text-align: center;
+        }
+        
+        .location-search {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .cafe-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+        
+        .cafe-card:hover, .cafe-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--accent);
+        }
+        
+        .cafe-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .cafe-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .cafe-card:hover .cafe-img img {
+            transform: scale(1.05);
+        }
+        
+        .cafe-content {
+            padding: 20px;
+        }
+        
+        .cafe-title {
+            color: var(--dark-brown);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .cafe-desc {
+            color: var(--medium-brown);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .cafe-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-badge {
+            background-color: var(--cream);
+            color: var(--dark-brown);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .cafe-hours {
+            font-size: 0.9rem;
+            color: var(--medium-brown);
+            margin-bottom: 15px;
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 50px;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 70px 0 30px;
+            margin-top: 80px;
+        }
+        
+        .footer-title {
+            color: var(--cream);
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cream);
+            transform: translateX(5px);
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item.active {
+            background-color: var(--cream);
+            color: var(--dark-brown);
+            font-weight: 600;
+        }
+        
+        .filter-options {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--cream);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--medium-brown);
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        /* Custom marker styling */
+        .custom-marker {
+            background-color: var(--accent);
+            width: 30px;
+            height: 30px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .custom-marker i {
+            transform: rotate(45deg);
+            color: white;
+        }
+        
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.2);
+        }
+        
+        .leaflet-popup-content {
+            margin: 15px;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .popup-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--dark-brown);
+            margin-bottom: 8px;
+        }
+        
+        .popup-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .popup-feature {
+            background-color: var(--cream);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-mug-hot me-2"></i><b>Artisan Coffee</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'find_cafe' %}">Find a Cafe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart cart-icon"></i></a>
+                    </li>
+                    <form class="d-flex search-form" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Find a Cafe</h1>
+            <p class="lead">Discover our cozy locations near you</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="location-search">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                        <input type="text" class="form-control form-control-lg" placeholder="Enter your location or zip code" id="location-input">
+                        <button class="btn btn-primary" type="button" id="search-location">Search</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select form-select-lg" id="features-filter">
+                        <option selected>Filter by features</option>
+                        <option value="wifi">Wi-Fi Available</option>
+                        <option value="outdoor">Outdoor Seating</option>
+                        <option value="drive-thru">Drive-Thru</option>
+                        <option value="meeting">Meeting Rooms</option>
+                        <option value="pet-friendly">Pet Friendly</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <h2 class="section-title">Our Locations</h2>
+                    
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="open-now">Open Now</button>
+                        <button class="filter-btn" data-filter="parking">With Parking</button>
+                        <button class="filter-btn" data-filter="24-7">24/7</button>
+                    </div>
+                    
+                    <div class="row" id="cafe-listings">
+                        <div class="col-md-6">
+                            <div class="cafe-card active" data-id="1">
+                                <div class="cafe-img">
+                                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Downtown Cafe">
+                                </div>
+                                <div class="cafe-content">
+                                    <h3 class="cafe-title">Downtown Cafe</h3>
+                                    <p class="cafe-desc">Our flagship location in the heart of the city.</p>
+                                    <div class="cafe-features">
+                                        <span class="feature-badge">Wi-Fi</span>
+                                        <span class="feature-badge">Outdoor Seating</span>
+                                        <span class="feature-badge">Meeting Room</span>
+                                    </div>
+                                    <p class="cafe-hours"><i class="fas fa-clock me-2"></i>Open today: 6:30 AM - 9:00 PM</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fas fa-map-marker-alt me-2"></i>
+                                            <span>123 Main Street</span>
+                                        </div>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Directions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="cafe-card" data-id="2">
+                                <div class="cafe-img">
+                                    <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Riverside Cafe">
+                                </div>
+                                <div class="cafe-content">
+                                    <h3 class="cafe-title">Riverside Cafe</h3>
+                                    <p class="cafe-desc">Scenic views with outdoor seating by the river.</p>
+                                    <div class="cafe-features">
+                                        <span class="feature-badge">Wi-Fi</span>
+                                        <span class="feature-badge">Outdoor Seating</span>
+                                        <span class="feature-badge">Pet Friendly</span>
+                                    </div>
+                                    <p class="cafe-hours"><i class="fas fa-clock me-2"></i>Open today: 7:00 AM - 8:00 PM</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fas fa-map-marker-alt me-2"></i>
+                                            <span>456 River Road</span>
+                                        </div>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Directions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="cafe-card" data-id="3">
+                                <div class="cafe-img">
+                                    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="University Cafe">
+                                </div>
+                                <div class="cafe-content">
+                                    <h3 class="cafe-title">University Cafe</h3>
+                                    <p class="cafe-desc">Perfect study spot with extended hours during exams.</p>
+                                    <div class="cafe-features">
+                                        <span class="feature-badge">Wi-Fi</span>
+                                        <span class="feature-badge">24/7</span>
+                                        <span class="feature-badge">Study Areas</span>
+                                    </div>
+                                    <p class="cafe-hours"><i class="fas fa-clock me-2"></i>Open 24/7</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fas fa-map-marker-alt me-2"></i>
+                                            <span>789 College Avenue</span>
+                                        </div>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Directions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="cafe-card" data-id="4">
+                                <div class="cafe-img">
+                                    <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Parkview Cafe">
+                                </div>
+                                <div class="cafe-content">
+                                    <h3 class="cafe-title">Parkview Cafe</h3>
+                                    <p class="cafe-desc">Family-friendly location with a play area and parking.</p>
+                                    <div class="cafe-features">
+                                        <span class="feature-badge">Parking</span>
+                                        <span class="feature-badge">Drive-Thru</span>
+                                        <span class="feature-badge">Family Area</span>
+                                    </div>
+                                    <p class="cafe-hours"><i class="fas fa-clock me-2"></i>Open today: 6:00 AM - 10:00 PM</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fas fa-map-marker-alt me-2"></i>
+                                            <span>101 Park Boulevard</span>
+                                        </div>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Directions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-5">
+                    <div class="sticky-top" style="top: 100px;">
+                        <h2 class="section-title">Locator Map</h2>
+                        <div class="map-container">
+                            <div id="map"></div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h3 class="h5 mb-3">Quick Facts</h3>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total Locations:</span>
+                                <strong>12 Cafes</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Cities Served:</span>
+                                <strong>5 Cities</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>24/7 Locations:</span>
+                                <strong>3 Cafes</strong>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Drive-Thru Available:</span>
+                                <strong>4 Locations</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="footer-title">Artisan Coffee</h4>
+                    <p>We're passionate about serving the finest coffee experiences in a warm, welcoming environment.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <div class="footer-links">
+                        <a href="#">Home</a>
+                        <a href="#">Menu</a>
+                        <a href="#">Find a Cafe</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Contact</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="footer-title">Store Hours</h5>
+                    <div class="footer-links">
+                        <p>Monday-Friday: 6:30am - 9pm</p>
+                        <p>Saturday: 7am - 10pm</p>
+                        <p>Sunday: 7:30am - 8pm</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="footer-title">Contact Us</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Coffee Lane, Brewville</p>
+                        <p><i class="fas fa-phone me-2"></i> (555) 123-4567</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@artisancoffee.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center copyright">
+                <p>© 2023 Artisan Coffee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        // Cafe data with coordinates
+        const cafes = [
+            {
+                id: 1,
+                name: "Downtown Cafe",
+                description: "Our flagship location in the heart of the city.",
+                address: "123 Main Street",
+                hours: "Open today: 6:30 AM - 9:00 PM",
+                features: ["Wi-Fi", "Outdoor Seating", "Meeting Room"],
+                lat: 40.7128,
+                lng: -74.0060,
+                image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                name: "Riverside Cafe",
+                description: "Scenic views with outdoor seating by the river.",
+                address: "456 River Road",
+                hours: "Open today: 7:00 AM - 8:00 PM",
+                features: ["Wi-Fi", "Outdoor Seating", "Pet Friendly"],
+                lat: 40.7200,
+                lng: -74.0150,
+                image: "https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                name: "University Cafe",
+                description: "Perfect study spot with extended hours during exams.",
+                address: "789 College Avenue",
+                hours: "Open 24/7",
+                features: ["Wi-Fi", "24/7", "Study Areas"],
+                lat: 40.7050,
+                lng: -74.0100,
+                image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                name: "Parkview Cafe",
+                description: "Family-friendly location with a play area and parking.",
+                address: "101 Park Boulevard",
+                hours: "Open today: 6:00 AM - 10:00 PM",
+                features: ["Parking", "Drive-Thru", "Family Area"],
+                lat: 40.7000,
+                lng: -74.0050,
+                image: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        // Initialize map
+        const map = L.map('map').setView([40.7128, -74.0060], 13);
+        
+        // Add tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Custom icon
+        const coffeeIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<i class="fas fa-mug-hot"></i>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+        
+        // Add markers for each cafe
+        const markers = [];
+        cafes.forEach(cafe => {
+            const marker = L.marker([cafe.lat, cafe.lng], {icon: coffeeIcon}).addTo(map);
+            
+            // Create popup content
+            const popupContent = `
+                <div class="popup-title">${cafe.name}</div>
+                <div>${cafe.address}</div>
+                <div class="popup-features">
+                    ${cafe.features.map(feature => `<span class="popup-feature">${feature}</span>`).join('')}
+                </div>
+                <div>${cafe.hours}</div>
+            `;
+            
+            marker.bindPopup(popupContent);
+            markers.push(marker);
+            
+            // Add click event to show popup
+            marker.on('click', function() {
+                // Highlight the corresponding card
+                document.querySelectorAll('.cafe-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+                document.querySelector(`.cafe-card[data-id="${cafe.id}"]`).classList.add('active');
+            });
+        });
+        
+        // Fit map to show all markers
+        const group = new L.featureGroup(markers);
+        map.fitBounds(group.getBounds().pad(0.1));
+        
+        // Add click events to cafe cards
+        document.querySelectorAll('.cafe-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const cafeId = this.getAttribute('data-id');
+                const cafe = cafes.find(c => c.id == cafeId);
+                
+                // Remove active class from all cards
+                document.querySelectorAll('.cafe-card').forEach(c => {
+                    c.classList.remove('active');
+                });
+                
+                // Add active class to clicked card
+                this.classList.add('active');
+                
+                // Pan to marker and open popup
+                const marker = markers[cafeId - 1];
+                map.setView([cafe.lat, cafe.lng], 15);
+                marker.openPopup();
+            });
+        });
+        
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // In a real implementation, this would filter the cafe listings
+                console.log('Filter applied: ' + this.textContent);
+            });
+        });
+
+        // Location search functionality
+        document.getElementById('search-location').addEventListener('click', function() {
+            const searchInput = document.getElementById('location-input');
+            if (searchInput.value.trim() !== '') {
+                alert('Searching for cafes near: ' + searchInput.value);
+                // In a real implementation, this would geocode the address and show nearby locations
+            } else {
+                alert('Please enter a location to search');
+            }
+        });
+    </script>
+</body>
+</html>

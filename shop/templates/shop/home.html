@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Coffee House</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-brown: #3C2A21;
+            --medium-brown: #5C3D2E;
+            --light-brown: #B85C38;
+            --cream: #F0E3CA;
+            --accent: #E05D2F;
+            --light-accent: #FF9E6D;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #F9F6F0;
+            color: var(--dark-brown);
+        }
+        
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            color: var(--dark-brown) !important;
+            font-size: 28px;
+        }
+        
+        .nav-link {
+            color: var(--medium-brown) !important;
+            font-weight: 500;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent) !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--cream);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-brown);
+            border-color: var(--light-brown);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-secondary {
+            border-color: var(--medium-brown);
+            color: var(--medium-brown);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--medium-brown);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--cream) 0%, #ffffff 100%);
+        }
+        
+        .display-5 {
+            color: var(--dark-brown);
+            font-size: 3.2rem;
+            margin-bottom: 25px;
+        }
+        
+        .lead {
+            color: var(--medium-brown);
+            font-size: 1.25rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+        
+        .search-form {
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid var(--cream);
+        }
+        
+        .search-form .form-control {
+            border: none;
+            padding-left: 20px;
+        }
+        
+        .search-form .btn {
+            border-radius: 0 30px 30px 0;
+            background: var(--light-brown);
+            border: none;
+            padding: 10px 20px;
+        }
+        
+        .cart-icon {
+            font-size: 1.4rem;
+            color: var(--medium-brown);
+            transition: all 0.3s ease;
+        }
+        
+        .cart-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .feature-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 50px;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .coffee-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .coffee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .card-title {
+            color: var(--dark-brown);
+            font-weight: 700;
+        }
+        
+        .card-text {
+            color: var(--medium-brown);
+        }
+        
+        .price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .footer-title {
+            color: var(--cream);
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cream);
+            transform: translateX(5px);
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-mug-hot me-2"></i><b>Artisan Coffee</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'menu' %}">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'find_cafe' %}">Find a Cafe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart cart-icon"></i></a>
+                    </li>
+                    <form class="d-flex search-form" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search coffee..." aria-label="Search">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                <div class="col-10 col-sm-8 col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80" class="d-block mx-lg-auto img-fluid rounded shadow" alt="Coffee Preparation" loading="lazy">
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-5 fw-bold lh-1 mb-4">Experience the Art of Perfect Coffee</h1>
+                    <p class="lead">Discover handcrafted beverages, exceptional pastries, and the warm ambiance that makes every visit memorable. We source the finest beans from sustainable farms to bring you the perfect cup.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2"><i class="fas fa-coffee me-2"></i>View Menu</button>
+                        <button type="button" class="btn btn-outline-secondary btn-lg px-4"><i class="fas fa-map-marker-alt me-2"></i>Find Locations</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h2 class="section-title text-center">Why Choose Us</h2>
+                    <p>We're committed to excellence in every cup we serve</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3>Ethically Sourced</h3>
+                        <p>Our beans are sourced from sustainable farms that practice fair trade and environmental responsibility.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-mortar-pestle"></i>
+                        </div>
+                        <h3>Artisan Roasted</h3>
+                        <p>Each batch is carefully roasted in small quantities to bring out the unique flavors of the beans.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Crafted with Love</h3>
+                        <p>Our baristas are passionate about creating the perfect beverage experience for every customer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Popular Choices</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card coffee-card">
+                        <img src="https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Cappuccino">
+                        <div class="card-body">
+                            <h5 class="card-title">Cappuccino</h5>
+                            <p class="card-text">Perfect balance of espresso, steamed milk, and velvety foam.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$4.25</span>
+                                <a href="#" class="btn btn-sm btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card coffee-card">
+                        <img src="https://images.unsplash.com/photo-1514066558159-fc8c737ef259?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Cold Brew">
+                        <div class="card-body">
+                            <h5 class="card-title">Cold Brew</h5>
+                            <p class="card-text">Smooth and refreshing, steeped for 24 hours for maximum flavor.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$5.50</span>
+                                <a href="#" class="btn btn-sm btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card coffee-card">
+                        <img src="https://www.foodandwine.com/thmb/xQZv2CX6FO5331PYK7uGPF1we9Q=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Partners-Flat-White-FT-BLOG0523-b11f6273c2d84462954c2163d6a1076d.jpg" class="card-img-top" alt="Flat White">
+                        <div class="card-body">
+                            <h5 class="card-title">Flat White</h5>
+                            <p class="card-text">Creamy microfoam over a double shot of our signature espresso.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$4.75</span>
+                                <a href="#" class="btn btn-sm btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="footer-title">Artisan Coffee</h4>
+                    <p>We're passionate about serving the finest coffee experiences in a warm, welcoming environment.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <div class="footer-links">
+                        <a href="#">Home</a>
+                        <a href="#">Menu</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Careers</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="footer-title">Store Hours</h5>
+                    <div class="footer-links">
+                        <p>Monday-Friday: 6:30am - 9pm</p>
+                        <p>Saturday: 7am - 10pm</p>
+                        <p>Sunday: 7:30am - 8pm</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="footer-title">Contact Us</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Coffee Lane, Brewville</p>
+                        <p><i class="fas fa-phone me-2"></i> (555) 123-4567</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@artisancoffee.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center copyright">
+                <p>© 2023 Artisan Coffee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Artisan Coffee House</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-brown: #3C2A21;
+            --medium-brown: #5C3D2E;
+            --light-brown: #B85C38;
+            --cream: #F0E3CA;
+            --accent: #E05D2F;
+            --light-accent: #FF9E6D;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #F9F6F0;
+            color: var(--dark-brown);
+        }
+        
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            color: var(--dark-brown) !important;
+            font-size: 28px;
+        }
+        
+        .nav-link {
+            color: var(--medium-brown) !important;
+            font-weight: 500;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent) !important;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--cream);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-brown);
+            border-color: var(--light-brown);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-secondary {
+            border-color: var(--medium-brown);
+            color: var(--medium-brown);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--medium-brown);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .menu-hero {
+            padding: 80px 0 50px;
+            background: linear-gradient(135deg, var(--cream) 0%, #ffffff 100%);
+            text-align: center;
+        }
+        
+        .menu-category {
+            padding: 80px 0;
+        }
+        
+        .menu-category:nth-child(even) {
+            background-color: white;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 50px;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            margin-bottom: 25px;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.05);
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+        }
+        
+        .menu-item-title {
+            color: var(--dark-brown);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item-desc {
+            color: var(--medium-brown);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .menu-item-price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .add-to-cart {
+            background: var(--light-brown);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .category-filter {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--cream);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--medium-brown);
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .nutrition-info {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 8px;
+        }
+        
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .footer-title {
+            color: var(--cream);
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cream);
+            transform: translateX(5px);
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item.active {
+            background-color: var(--cream);
+            color: var(--dark-brown);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-mug-hot me-2"></i><b>Artisan Coffee</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'find_cafe' %}">Find a Cafe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart cart-icon"></i></a>
+                    </li>
+                    <form class="d-flex search-form" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search menu..." aria-label="Search">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="menu-hero">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Our Menu</h1>
+            <p class="lead">Discover our handcrafted beverages and delicious pastries</p>
+        </div>
+    </section>
+
+    <div class="category-filter container mt-4">
+        <button class="filter-btn active" data-filter="all">All Items</button>
+        <button class="filter-btn" data-filter="hot-coffees">Hot Coffees</button>
+        <button class="filter-btn" data-filter="iced-coffees">Iced Coffees</button>
+        <button class="filter-btn" data-filter="espresso">Espresso</button>
+        <button class="filter-btn" data-filter="teas">Teas</button>
+        <button class="filter-btn" data-filter="pastries">Pastries</button>
+    </div>
+
+    <section id="hot-coffees" class="menu-category">
+        <div class="container">
+            <h2 class="section-title">Hot Coffees</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Cappuccino">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Cappuccino</h3>
+                            <p class="menu-item-desc">Perfect balance of espresso, steamed milk, and velvety foam.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.25</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">240 cal • 12g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Latte">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Café Latte</h3>
+                            <p class="menu-item-desc">Smooth espresso blended with steamed milk and light foam.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.75</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">190 cal • 18g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://www.foodandwine.com/thmb/xQZv2CX6FO5331PYK7uGPF1we9Q=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Partners-Flat-White-FT-BLOG0523-b11f6273c2d84462954c2163d6a1076d.jpg" alt="Flat White">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Flat White</h3>
+                            <p class="menu-item-desc">Creamy microfoam over a double shot of our signature espresso.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.95</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">170 cal • 15g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="iced-coffees" class="menu-category" style="background-color: #F9F6F0;">
+        <div class="container">
+            <h2 class="section-title">Iced & Cold Brew</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1514066558159-fc8c737ef259?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Cold Brew">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Cold Brew</h3>
+                            <p class="menu-item-desc">Smooth and refreshing, steeped for 24 hours for maximum flavor.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$5.50</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">5 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://myeverydaytable.com/wp-content/uploads/ICEDLATTE_0_4.jpg" alt="Iced Latte">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Iced Latte</h3>
+                            <p class="menu-item-desc">Espresso chilled with milk and served over ice.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.95</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">130 cal • 12g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://bakingmischief.com/wp-content/uploads/2019/05/iced-mocha-image-square.jpg" alt="Iced Mocha">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Iced Mocha</h3>
+                            <p class="menu-item-desc">Chocolate, espresso and milk served over ice.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$5.75</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">350 cal • 34g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="espresso" class="menu-category">
+        <div class="container">
+            <h2 class="section-title">Espresso & Shots</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Espresso Shot">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Espresso Shot</h3>
+                            <p class="menu-item-desc">A concentrated form of coffee served in shots.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$2.95</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">5 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsNWLAdVkM3JYf30q3tE0GW504zeUOgX4EnA&s" alt="Doppio">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Doppio</h3>
+                            <p class="menu-item-desc">A double shot of espresso for an extra strong boost.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.75</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">10 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Espresso Con Panna">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Espresso Con Panna</h3>
+                            <p class="menu-item-desc">Espresso topped with whipped cream.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.95</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">35 cal • 2g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teas Section -->
+    <section id="teas" class="menu-category" style="background-color: #F9F6F0;">
+        <div class="container">
+            <h2 class="section-title">Teas</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Earl Grey Tea">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Earl Grey</h3>
+                            <p class="menu-item-desc">Classic black tea infused with bergamot oil for a citrusy aroma.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.50</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">0 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images-prod.healthline.com/hlcmsresource/images/chamomile-tea.jpg" alt="Chamomile Tea">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Chamomile</h3>
+                            <p class="menu-item-desc">Soothing herbal tea with delicate floral notes and calming properties.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.75</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">0 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://www.romylondonuk.com/wp-content/uploads/2025/04/Matcha-Latte-Starbucks-Recipe_THUMB.jpg" alt="Matcha Latte">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Matcha Latte</h3>
+                            <p class="menu-item-desc">Finely ground green tea powder whisked with steamed milk.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$5.25</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">120 cal • 10g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Peppermint Tea">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Peppermint</h3>
+                            <p class="menu-item-desc">Refreshing herbal tea with a cool, invigorating flavor.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.50</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">0 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQfjqxuf-B1B5Y23WzJs7rKlsUbmrAykjDxg&s" alt="Chai Latte">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Chai Latte</h3>
+                            <p class="menu-item-desc">Spiced black tea blended with steamed milk and honey.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.95</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">180 cal • 24g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgjwBXLyrBp061cretYXkOojY4ZrFUXL4sQQ&s" alt="Iced Green Tea">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Iced Green Tea</h3>
+                            <p class="menu-item-desc">Refreshing green tea served over ice with a hint of lemon.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.25</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">5 cal • 0g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pastries Section -->
+    <section id="pastries" class="menu-category">
+        <div class="container">
+            <h2 class="section-title">Pastries & Snacks</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRf9Ds2262BNDa5SdgjFb2aCI4rJx27AUZSA&s" alt="Croissant">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Butter Croissant</h3>
+                            <p class="menu-item-desc">Flaky, buttery pastry made with layers of delicate dough.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.50</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">270 cal • 6g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://images.unsplash.com/photo-1623334044303-241021148842?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Chocolate Muffin">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Chocolate Chip Muffin</h3>
+                            <p class="menu-item-desc">Moist muffin loaded with rich chocolate chips.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.75</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">420 cal • 32g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-pHplhFOuPND1fYM-MPag6PI1vZZd6DiyJQ&s" alt="Cinnamon Roll">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Cinnamon Roll</h3>
+                            <p class="menu-item-desc">Soft, swirled pastry with cinnamon filling and cream cheese icing.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.50</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">380 cal • 28g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://www.simplyrecipes.com/thmb/UijSGX9q71RpSUkS3yfOloFL27I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Almond-Croissant-LEAD-8-07f51557bda7499aa6d1ccb4d079ea52.jpg" alt="Almond Croissant">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Almond Croissant</h3>
+                            <p class="menu-item-desc">Buttery croissant filled with almond cream and topped with sliced almonds.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.25</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">410 cal • 18g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7sY0PJ7LyVDU0rbCvzmfxUygubBmGE8FnmQ&s" alt="Scone">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Blueberry Scone</h3>
+                            <p class="menu-item-desc">Tender scone packed with juicy blueberries and a hint of lemon.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$3.95</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">340 cal • 16g sugar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="https://www.allrecipes.com/thmb/fAkQn-FhjF89oTJ5JXpgwvwNf34=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20144-banana-banana-bread-VAT-009-4x3-B-78f1cfc64bfa451e8a0fead814719b9f.jpg" alt="Banana Bread">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3 class="menu-item-title">Banana Bread</h3>
+                            <p class="menu-item-desc">Moist, flavorful bread made with ripe bananas and walnuts.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="menu-item-price">$4.25</span>
+                                <button class="add-to-cart">Add to Cart</button>
+                            </div>
+                            <div class="nutrition-info">380 cal • 28g sugar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="footer-title">Artisan Coffee</h4>
+                    <p>We're passionate about serving the finest coffee experiences in a warm, welcoming environment.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <div class="footer-links">
+                        <a href="#">Home</a>
+                        <a href="#">Menu</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Careers</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="footer-title">Store Hours</h5>
+                    <div class="footer-links">
+                        <p>Monday-Friday: 6:30am - 9pm</p>
+                        <p>Saturday: 7am - 10pm</p>
+                        <p>Sunday: 7:30am - 8pm</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="footer-title">Contact Us</h5>
+                    <div class="footer-links">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Coffee Lane, Brewville</p>
+                        <p><i class="fas fa-phone me-2"></i> (555) 123-4567</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@artisancoffee.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center copyright">
+                <p>© 2023 Artisan Coffee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Get the filter value
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    // If "all" is selected, show all categories
+                    if (filterValue === 'all') {
+                        document.querySelectorAll('.menu-category').forEach(category => {
+                            category.style.display = 'block';
+                        });
+                    } else {
+                        // Hide all categories
+                        document.querySelectorAll('.menu-category').forEach(category => {
+                            category.style.display = 'none';
+                        });
+                        
+                        // Show the selected category
+                        document.getElementById(filterValue).style.display = 'block';
+                    }
+                });
+            });
+
+            // Update dropdown menu items when clicked
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all dropdown items
+                    dropdownItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Get the filter value from href
+                    const filterValue = this.getAttribute('href').substring(1);
+                    
+                    // Trigger click on corresponding filter button
+                    document.querySelector(`.filter-btn[data-filter="${filterValue}"]`).click();
+                    
+                    // Scroll to the section
+                    document.getElementById(filterValue).scrollIntoView({behavior: 'smooth'});
+                });
+            });
+        });
+    </script>
+</body>
+</html>
