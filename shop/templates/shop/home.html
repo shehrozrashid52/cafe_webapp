@@ -281,7 +281,7 @@
                         <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
                     </li>
                 </ul>
                 
@@ -368,7 +368,7 @@
                             <p class="card-text">Perfect balance of espresso, steamed milk, and velvety foam.</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="price">$4.25</span>
-                                <a href="#" class="btn btn-sm btn-primary">Add to Cart</a>
+                                <a href="{% url 'cart' %}" class="btn btn-sm btn-primary">Add to Cart</a>
                             </div>
                         </div>
                     </div>
