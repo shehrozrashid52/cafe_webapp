@@ -10,4 +10,13 @@ def find_cafe(request):
     return render(request, "shop/find_cafe.html")
 
 def contact(request):
-    return render(request, "shop/contact.html")  
+    return render(request, "shop/contact.html")
+
+def about(request):
+    return render(request, "shop/about.html")
+
+def cart(request):
+    return render(request, "shop/cart.html")
+
+def checkout(request):
+    return render(request, "shop/checkout.html")
